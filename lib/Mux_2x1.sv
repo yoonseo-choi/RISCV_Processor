@@ -1,10 +1,9 @@
-module Mux_2x1 (in0, in1, sel, out);
+module Mux_2x1 (input [31:0] in0, in1, 
+                input sel, 
+                output [31:0] out
+);
 
-    input [31:0] in0, in1;
-    input sel;
-    output [31:0] out;
-
-    always @ (.*) begin
+    always_comb begin
 
         case (sel)
 

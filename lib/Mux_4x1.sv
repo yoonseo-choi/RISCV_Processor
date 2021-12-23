@@ -1,10 +1,9 @@
-module Mux_4x1 (in0, in1, in2, in3, sel, out);
+module Mux_4x1 (input [31:0] in0, in1, in2, in3, 
+                input [1:0] sel, 
+                output [31:0] out
+);
 
-    input [31:0] in0, in1, in2, in3;
-    input [1:0] sel;
-    output [31:0] out;
-
-    always @ (.*) begin
+    always_comb begin
 
         case (sel)
 

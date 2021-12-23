@@ -1,5 +1,5 @@
-module D_FlipFlop (input [31:0] d, 
-            input clk,
+module D_FlipFlop (input logic [31:0] d, 
+            input logic clk,
             output logic [31:0] q
 );
 

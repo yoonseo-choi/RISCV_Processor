@@ -1,5 +1,5 @@
-module FullAdder_32 (input [31:0] a, b, 
-                     input cin,
+module FullAdder_32 (input logic [31:0] a, b, 
+                     input logic cin,
                      output [31:0] sum, 
                      output cout
 );

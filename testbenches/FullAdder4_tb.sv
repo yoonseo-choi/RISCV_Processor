@@ -1,4 +1,4 @@
-// 1 bit Full Adder test bench
+// 4 bit Full Adder test bench
 
 module FullAdder4_tb ();
 

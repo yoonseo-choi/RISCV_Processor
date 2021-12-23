@@ -1,4 +1,4 @@
-// 1 bit Full Adder test bench
+// 32 bit Full Adder test bench
 
 module FullAdder32_tb ();
 

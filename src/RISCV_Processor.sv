@@ -1,6 +1,5 @@
 module RISCV_Processor (input logic select,
-                        input logic clk, 
-                        output logic [31:0] out_pc
+                        input logic clk
 );
 
     /*                 PC LOGIC                */
@@ -15,15 +14,18 @@ module RISCV_Processor (input logic select,
 
     D_FlipFlop PC_DFF (_pc_next_, clk, _pc_);  
 
-   
-    always_comb begin
-        
-        _pc_in1_ = _pc_ + 1;                                 // increment pc by 1
+    assign _pc_in1_ = _pc_ + 1;                                 // increment pc by 1
 
-        _pc_select_ = select;                                // assign to pc select FOR NOW
+    assign _pc_select_ = select;                                // assign to pc select FOR NOW
 
-        out_pc = _pc_;
 
-    end
+    /*              INSTRUCTION MEMORY          */
+    /*==========================================*/
+
+    logic [31:0] _instruction_;
+    
+    READ_FROM_IMEM IMEM (_pc_, _instruction_);
+
+
 
 endmodule

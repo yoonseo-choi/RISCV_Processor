@@ -8,10 +8,9 @@ timeprecision 1ns;
 logic clk = 0;
 
 logic select;
-logic [31:0] out_pc;
 
 
-localparam period = 1;
+localparam period = 2;
 
 
 // unit under test
@@ -32,32 +31,27 @@ end
 initial begin: TEST_VECTORS
 
 select = 0;
-$display ("out: %d", out_pc);
 #10;
+$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
 
 
 select = 1;
-$display ("out: %d", out_pc);
 #period;
 
 
-
-$display ("out: %d", out_pc);
+$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
 #period;
 
-
-
-$display ("out: %d", out_pc);
+$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
 #period;
 
-
-
-$display ("out: %d", out_pc);
+$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
 #period;
 
+$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
+#period;
 
-
-$display ("out: %d", out_pc);
+$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
 #period;
 
 

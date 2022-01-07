@@ -2,12 +2,31 @@ module RV32I_Dec (input logic [31:0] instr,
                   output logic [31:0] rs1, rs2, rd, imm
 );
 
+    logic is_R, is_I, is_S, is_B, is_U, is_J;
+
+    logic [7:0] _opcode;
+    logic [4:0] _rs1,_rs2,_rd;
+    logic [2:0] _funct3;
+    logic [6:0] _funct7;
+
+    logic rs1_valid, rs2_valid, rd_valid, funct3_valid, imm_valid, funct7_valid;
+
+    logic [31:0] _imm;
+
+    logic [2:0] funct3;
+    logic [6:0] funct7;
+
+    logic is_BEQ, is_BNE, is_BLT, is_BGE, is_BLTU, is_BGEU;
+
+    logic is_ADDI, is_ADD;
+
+
     always_comb begin
 
 
         /*              Instruction Types               */
 
-        logic is_R, is_I, is_S, is_B, is_U, is_J;
+        
 
         is_R = (instr[6:2] == 5'b01011) || (instr[6:2] == 5'b01100) || (instr[6:2] == 5'b01110) || (instr[6:2] == 5'b10100);
 
@@ -24,11 +43,7 @@ module RV32I_Dec (input logic [31:0] instr,
 
         /*              Instruction Fields              */
 
-        logic [7:0] _opcode;
-        logic [4:0] _rs1,_rs2,_rd;
-        logic [2:0] _funct3;
-        logic [6:0] _funct7;
-
+        
         _opcode = instr[6:0];            // instr[1:0] must be 2'b11
 
         _rs1 = instr[19:15];
@@ -44,8 +59,7 @@ module RV32I_Dec (input logic [31:0] instr,
 
         /*              Check for field validity                */
 
-        logic rs1_valid, rs2_valid, rd_valid, funct3_valid, imm_valid, funct7_valid;
-
+        
         rs1_valid = is_R || is_I || is_S || is_B;
 
         rs2_valid = is_R || is_S || is_B;
@@ -61,7 +75,7 @@ module RV32I_Dec (input logic [31:0] instr,
 
         /*              Immediate field              */
 
-        logic [31:0] _imm;
+        
 
         if (is_I == 1'b1) begin
             _imm = {{21{instr[31]}}, instr[30:20]};
@@ -90,8 +104,7 @@ module RV32I_Dec (input logic [31:0] instr,
 
         /*          instruction fields           */
 
-        logic [2:0] funct3;
-        logic [6:0] funct7;
+        
 
         rs1 = (rs1_valid == 1'b1) ? _rs1:32'd0;
 
@@ -109,11 +122,10 @@ module RV32I_Dec (input logic [31:0] instr,
 
         /*              Branch Instructions                 */
 
-        logic is_BEQ, is_BNE, is_BLT, is_BGE, is_BLTU, is_BGEU;
 
-        if (opcode == 7'b1100011 && func3_valid == 1'b1) begin
+        if (_opcode == 7'b1100011 && funct3_valid == 1'b1) begin
 
-            if (opcode == 3'd0) begin               // BEQ
+            if (_funct3 == 3'd0) begin               // BEQ
                 is_BEQ = 1'b1;
                 is_BNE = 1'b0;
                 is_BLT = 1'b0;
@@ -123,7 +135,7 @@ module RV32I_Dec (input logic [31:0] instr,
                 is_BGEU = 1'b0;
             end
 
-            else if (opcode == 3'd1) begin          // BNE
+            else if (_funct3 == 3'd1) begin          // BNE
                 is_BEQ = 1'b0;
                 is_BNE = 1'b1;
                 is_BLT = 1'b0;
@@ -133,7 +145,7 @@ module RV32I_Dec (input logic [31:0] instr,
                 is_BGEU = 1'b0;
             end
 
-            else if (opcode == 3'd4) begin          // BLT
+            else if (_funct3 == 3'd4) begin          // BLT
                 is_BEQ = 1'b0;
                 is_BNE = 1'b0;
                 is_BLT = 1'b1;
@@ -143,7 +155,7 @@ module RV32I_Dec (input logic [31:0] instr,
                 is_BGEU = 1'b0;
             end
 
-            else if (opcode == 3'd5) begin          // BGE
+            else if (_funct3 == 3'd5) begin          // BGE
                 is_BEQ = 1'b0;
                 is_BNE = 1'b0;
                 is_BLT = 1'b0;
@@ -153,7 +165,7 @@ module RV32I_Dec (input logic [31:0] instr,
                 is_BGEU = 1'b0;
             end
 
-            else if (opcode == 3'd6) begin          // BLTU
+            else if (_funct3 == 3'd6) begin          // BLTU
                 is_BEQ = 1'b0;
                 is_BNE = 1'b0;
                 is_BLT = 1'b0;
@@ -163,7 +175,7 @@ module RV32I_Dec (input logic [31:0] instr,
                 is_BGEU = 1'b0;
             end
 
-            else if (opcode == 3'd7) begin          // BGEU
+            else if (_funct3 == 3'd7) begin          // BGEU
                 is_BEQ = 1'b0;
                 is_BNE = 1'b0;
                 is_BLT = 1'b0;
@@ -198,9 +210,9 @@ module RV32I_Dec (input logic [31:0] instr,
 
         /*              Add Instructions                */
 
-        logic is_ADDI, is_ADD;
+    
 
-        if (funct3_valid == 1'b1 && funct3 == 3'd0 && opcode == 7'b0010011) begin                                                   // ADDI
+        if (funct3_valid == 1'b1 && funct3 == 3'd0 && _opcode == 7'b0010011) begin                                                   // ADDI
             is_ADDI = 1'b1;
         end
         
@@ -208,8 +220,8 @@ module RV32I_Dec (input logic [31:0] instr,
             is_ADDI = 1'b0;
         end
 
-        if (funct3_valid == 1'b1 && funct7_valid == 1'b1 && funct3 == 3'd0 && funct7[5] == 1'b0 && opcode == 7'b0110011) begin      // ADD
-            is_ADD == 1'b1;
+        if (funct3_valid == 1'b1 && funct7_valid == 1'b1 && funct3 == 3'd0 && funct7[5] == 1'b0 && _opcode == 7'b0110011) begin      // ADD
+            is_ADD = 1'b1;
         end
 
         else begin

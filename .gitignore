@@ -8,3 +8,4 @@
 # Ignore Folders from Quartus
 
 db/
+incremental_db/

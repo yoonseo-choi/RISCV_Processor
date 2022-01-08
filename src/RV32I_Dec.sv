@@ -1,5 +1,6 @@
 module RV32I_Dec (input logic [31:0] instr,
-                  output logic [31:0] rs1, rs2, rd, imm
+                  output logic [4:0] rs1, rs2, rd,
+                  output logic [31:0] imm
 );
 
     logic is_R, is_I, is_S, is_B, is_U, is_J;

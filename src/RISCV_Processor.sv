@@ -26,6 +26,13 @@ module RISCV_Processor (input logic select,
     
     READ_FROM_IMEM IMEM (_pc_, _instruction_);
 
+    /*              DECODE LOGIC                */
+    /*==========================================*/
+
+    logic [4:0] _rs1_, _rs2_, _rd_;
+    logic [31:0] _imm_;
+
+    RV32I_Dec DECODE_UNIT (_instruction_, _rs1_, _rs2_, _rd_, _imm_);
 
 
 endmodule

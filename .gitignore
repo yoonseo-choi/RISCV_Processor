@@ -1,0 +1,10 @@
+# Ignore Files from Quartus
+
+*.rpt
+*.summary
+*.done
+*.qsf
+
+# Ignore Folders from Quartus
+
+db/

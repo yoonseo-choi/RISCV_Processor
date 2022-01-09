@@ -7,7 +7,7 @@ timeprecision 1ns;
 
 logic clk = 0;
 
-logic [31:0] instr, rs1, rs2, rd, imm;
+logic [31:0] instr, rs1, rs2, rd, imm, op2_sel;
 
 localparam period = 5;
 

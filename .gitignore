@@ -4,6 +4,7 @@
 *.summary
 *.done
 *.qsf
+RISCV_Processor_description.txt
 
 # Ignore Folders from Quartus
 

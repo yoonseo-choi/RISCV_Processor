@@ -1,5 +1,4 @@
-module RISCV_Processor (input logic select,
-                        input logic clk
+module RISCV_Processor (input logic clk, reset, select
 );
 
     /*                 PC LOGIC                */
@@ -32,7 +31,28 @@ module RISCV_Processor (input logic select,
     logic [4:0] _rs1_, _rs2_, _rd_;
     logic [31:0] _imm_;
 
-    RV32I_Dec DECODE_UNIT (_instruction_, _rs1_, _rs2_, _rd_, _imm_);
+    RV32I_Dec DECODE_UNIT (_instruction_, _rs1_, _rs2_, _rd_, _imm_, _op2_sel_);
+
+    /*              Register File               */
+    /*==========================================*/
+
+    logic _rd1_en_, _rd2_en_, _wr_en_;
+    logic [4:0] _rd1_idx_, _rd2_idx, _wr_idx_;
+    logic [31:0] _rd1_data_, _rd2_data_, _wr_data_;
+
+    RegFile_32 REGISTER_FILE (clk, reset, _rd1_idx_, _rd2_idx, _rd1_en_, _rd2_en_, _wr_idx_, _wr_en_, _wr_data_, _rd1_data_, _rd2_data_);
+
+
+    /*              Arithmetic Logic Unit               */
+    /*==================================================*/
+
+    logic [31:0] _op1_, _op2_;
+    logic _op2_sel_;
+
+    assign _op1_ = _rd1_data_;
+
+    Mux_2x1 OP2_MUX (_rd2_data_, _imm_, _op2_sel_, _op2_);
+
 
 
 endmodule

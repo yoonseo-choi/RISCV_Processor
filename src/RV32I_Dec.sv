@@ -1,6 +1,7 @@
 module RV32I_Dec (input logic [31:0] instr,
                   output logic [4:0] rs1, rs2, rd,
-                  output logic [31:0] imm
+                  output logic [31:0] imm,
+                  output logic op2_sel
 );
 
     logic is_R, is_I, is_S, is_B, is_U, is_J;
@@ -211,7 +212,6 @@ module RV32I_Dec (input logic [31:0] instr,
 
         /*              Add Instructions                */
 
-    
 
         if (funct3_valid == 1'b1 && funct3 == 3'd0 && _opcode == 7'b0010011) begin                                                   // ADDI
             is_ADDI = 1'b1;
@@ -228,6 +228,11 @@ module RV32I_Dec (input logic [31:0] instr,
         else begin
             is_ADD = 1'b0;
         end
+
+
+        /*              Immediate Mux Output Port               */
+
+        op2_sel = is_I;
 
     end
 

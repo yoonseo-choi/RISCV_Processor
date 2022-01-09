@@ -7,7 +7,7 @@ timeprecision 1ns;
 
 logic clk = 0;
 
-logic select;
+logic select, reset;
 
 
 localparam period = 2;
@@ -29,6 +29,12 @@ end
 
 // test vectors for unit under test
 initial begin: TEST_VECTORS
+
+reset = 1;
+
+#2
+
+reset = 0;
 
 select = 0;
 #10;

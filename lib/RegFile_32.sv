@@ -26,9 +26,21 @@ module RegFile_32 (input logic clk,
 
         end
 
+        else begin
+
+            rd1_data = 32'd0;
+
+        end
+
         if (rd2_en == 1'b1) begin
 
             rd2_data = REG_FILE [rd2_idx];
+
+        end
+
+        else begin
+
+            rd2_data = 32'd0;
 
         end
 

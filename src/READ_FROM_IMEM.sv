@@ -1,4 +1,4 @@
-module READ_FROM_IMEM (input logic [31:0] addr,
+module READ_FROM_IMEM (input logic [63:0] addr,
                        output logic [31:0] data);
 
 parameter IMEM_LEN = 32;

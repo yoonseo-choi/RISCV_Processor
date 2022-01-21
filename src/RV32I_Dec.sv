@@ -1,7 +1,8 @@
 module RV32I_Dec (input logic [31:0] instr,
                   output logic [4:0] rs1, rs2, rd,
                   output logic [31:0] imm,
-                  output logic op2_sel
+                  output logic op2_sel,
+                  output logic add, sub, and, or, xor
 );
 
     logic is_R, is_I, is_S, is_B, is_U, is_J;
@@ -233,6 +234,18 @@ module RV32I_Dec (input logic [31:0] instr,
         /*              Immediate Mux Output Port               */
 
         op2_sel = is_I;
+
+        /*              ALU Instruction Type Output Port                */
+
+        // instructions to be implemented
+        logic is_SUB, is_AND, is_OR, is_XOR;
+        logic is_SUBI, is_ANDI, is_ORI, is_XORI;
+
+        add = is_ADDI || is_ADD;
+        sub = is_SUB || is_SUBI;
+        and = is_AND || is_ANDI;
+        or = is_OR || is_ORI;
+        xor = is_XOR || is_XORI;
 
     end
 

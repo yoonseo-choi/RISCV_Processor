@@ -1,7 +1,7 @@
 module FullAdder_32 (input logic [31:0] a, b, 
                      input logic cin,
-                     output [31:0] sum, 
-                     output cout
+                     output logic [31:0] sum, 
+                     output logic cout
 );
 
     logic temp_cout;

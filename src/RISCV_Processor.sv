@@ -18,11 +18,13 @@ module RISCV_Processor (input logic clk, reset, select
 
     LShift LSHIFT_UNIT (_instruction_64_, _instruction_64_shl_);
 
-    FullAdder_64 PC_JMP_ADDER (_pc_, _instruction_64_shl_, 0, _pc_in1_, _pc_jmp_cout_);    
+    FullAdder_64 PC_JMP_ADDER (_pc_, _instruction_64_shl_, 0, _pc_in1_, _pc_jmp_cout_);  
+
 
     Mux_2x1 PC_MUX (_pc_in0_, _pc_in1_, _pc_select_, _pc_next_);     
 
-    // pc_select = branch & ALU Zero            // CU Variable
+    assign _pc_select_ = _alu_zero_ & _branch_;         // AND gate between branch and alu zero
+
 
 
 
@@ -59,7 +61,33 @@ module RISCV_Processor (input logic clk, reset, select
 
     assign _alu_src1_ = _rd1_data_;
 
-    Mux_2x1 ALU_OP2_MUX (_rd2_data_ ,_instruction_64_, _alu_src2_sel_, _alu_src2_);
+    Mux_2x1 ALU_SRC2_MUX (_rd2_data_ ,_instruction_64_, _alu_src2_sel_, _alu_src2_);
+
+    logic [3:0] _alu_op_sel_;
+    logic [63:0] _alu_out_, _alu_zero_;
+
+    ALU ALU (_alu_src1_, _alu_src2_, _alu_op_sel_, _alu_out_, _alu_zero_);
+
+    // ALU CONTROL UNIT 
+    // receives input from control unit and instruction [30, 14:12] 
+    // outputs the _alu_op_sel_
+
+
+    /*                  Control Unit                    */
+
+    // inputs
+    // _instruction_ [6:0]
+
+
+    // outputs
+    logic _branch_;
+    logic _mem_read_, _mem_write_;
+    logic _mem_to_reg_;
+    logic [1:0] _alu_op_;
+    // _alu_src2_sel
+    // wr_en
+
+
 
     
 endmodule

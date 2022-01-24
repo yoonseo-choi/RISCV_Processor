@@ -3,7 +3,7 @@ module LShift (input logic [63:0] in,
 );
 
 
-    assign out = {in[62:0], 0};
+    assign out = {in[62:0], 1'b0};
 
 endmodule
 

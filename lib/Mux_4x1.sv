@@ -1,6 +1,6 @@
-module Mux_4x1 (input [31:0] in0, in1, in2, in3, 
-                input [1:0] sel, 
-                output [31:0] out
+module Mux_4x1 (input logic [31:0] in0, in1, in2, in3, 
+                input logic [1:0] sel, 
+                output logic [31:0] out
 );
 
     always_comb begin

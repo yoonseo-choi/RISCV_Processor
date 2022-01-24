@@ -1,7 +1,7 @@
-module FullAdder_1 (input a, b, 
-                     input cin,
-                     output sum, 
-                     output cout
+module FullAdder_1 (input logic a, b, 
+                     input logic cin,
+                     output logic sum, 
+                     output logic cout
 );
 
     assign sum = a ^ b ^ cin;

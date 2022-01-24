@@ -1,6 +1,7 @@
 module ALU (input logic [63:0] src1, src2,
             input logic [3:0] op_sel,
-            output logic [63:0] result, zero
+            output logic [63:0] result,
+            output logic zero
 );
 
 

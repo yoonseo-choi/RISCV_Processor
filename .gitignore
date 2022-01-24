@@ -12,3 +12,4 @@ RISCV_Processor_description.txt
 db/
 incremental_db/
 simulation/
+obj_dir/

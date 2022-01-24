@@ -14,7 +14,9 @@ module RISCV_Processor (input logic clk, reset, select
 
     D_FlipFlop PC_DFF (_pc_next_, clk, _pc_);               // pc register
 
+
     FullAdder_64 PC_INC_ADDER (_pc_ , 64'd1, 0, _pc_in0_, _pc_inc_cout_);           // change addend from 1 to 4 later when finalizing
+    
 
     LShift LSHIFT_UNIT (_instruction_64_, _instruction_64_shl_);
 
@@ -39,6 +41,8 @@ module RISCV_Processor (input logic clk, reset, select
 
     ImmGen IMMGEN_UNIT (_instruction_, _instruction_64_);
 
+    logic [63:0] _instruction_64_shl_;
+
 
     /*              Register File               */
     /*==========================================*/
@@ -49,7 +53,7 @@ module RISCV_Processor (input logic clk, reset, select
     
     logic [63:0] _wr_data_;                 // input data from mem write back stage
 
-    RegFile_32 REGISTER_FILE (clk, reset, _instruction_[19:15], _instruction_[24:20], _instruction_[11:7], _wr_en_, _wr_data_, _rd1_data_, _rd2_data_);
+    RegFile_64 REGISTER_FILE (clk, reset, _instruction_[19:15], _instruction_[24:20], _instruction_[11:7], _wr_en_, _wr_data_, _rd1_data_, _rd2_data_);
 
 
     /*              Arithmetic Logic Unit               */
@@ -64,7 +68,8 @@ module RISCV_Processor (input logic clk, reset, select
     Mux_2x1 ALU_SRC2_MUX (_rd2_data_ ,_instruction_64_, _alu_src2_sel_, _alu_src2_);
 
     logic [3:0] _alu_op_sel_;
-    logic [63:0] _alu_out_, _alu_zero_;
+    logic [63:0] _alu_out_;
+    logic _alu_zero_;
 
     ALU ALU (_alu_src1_, _alu_src2_, _alu_op_sel_, _alu_out_, _alu_zero_);
 

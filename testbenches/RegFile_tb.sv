@@ -5,14 +5,16 @@ timeprecision 1ns;
 
 logic clk = 0;
 
-logic reset, rd1_en, rd2_en, wr_en;
+logic reset;
+
+logic wr_en;
 
 logic [4:0] wr_idx, rd1_idx, rd2_idx;
 
-logic [31:0] wr_data, rd1_data, rd2_data;
+logic [63:0] wr_data, rd1_data, rd2_data;
 
 
-RegFile_32 UUT (.*);
+RegFile_64 UUT (.*);
 
 always begin: CLOCK_INITIALIZATION
 
@@ -31,7 +33,6 @@ initial begin: TEST_VECTORS
 
     reset = 1;
 
-    rd1_en = 0; rd2_en = 0; wr_en = 0; 
     wr_data = 32'd0;
     wr_idx = 5'd0; rd1_idx = 5'd0; rd2_idx = 5'd0;
 
@@ -47,8 +48,6 @@ initial begin: TEST_VECTORS
 
     rd1_idx = 5'd1;
     rd2_idx = 5'd2;
-    rd1_en = 1'b1;
-    rd2_en = 1'b1;
 
     #1
 

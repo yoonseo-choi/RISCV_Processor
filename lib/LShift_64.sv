@@ -1,4 +1,4 @@
-module LShift (input logic [63:0] in,
+module LShift_64 (input logic [63:0] in,
                output logic [63:0] out
 );
 

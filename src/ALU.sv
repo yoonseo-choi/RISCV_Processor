@@ -16,8 +16,6 @@ module ALU (input logic [63:0] src1, src2,
     /*          1100        NOR                 */
 
 
-    assign zero = (result == 64'd0);            // zero is set if result is 0
-
     always_comb begin
 
         case (op_sel)
@@ -34,5 +32,7 @@ module ALU (input logic [63:0] src1, src2,
         endcase
 
     end
+
+    assign zero = (result == 64'd0) ? 1'b1:1'b0;            // zero is set if result is 0
 
 endmodule

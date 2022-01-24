@@ -6,7 +6,8 @@ timeprecision 1ns;
 logic clk = 0;
 
 localparam period = 1;
-logic [31:0] addr, data;
+logic [31:0] data;
+logic [63:0] addr;
 
 READ_FROM_IMEM UUT (.*);
 
@@ -24,19 +25,19 @@ initial begin: TEST_VECTORS
     #period;
 
     $display ("Address: %d, Data: %d", addr, data);
-    addr = 1;
+    addr = 64'd1;
     #period;
 
     $display ("Address: %d, Data: %d", addr, data);    
-    addr = 2;
+    addr = 64'd2;
     #period;
 
     $display ("Address: %d, Data: %d", addr, data);
-    addr = 3;
+    addr = 64'd3;
     #period;
 
     $display ("Address: %d, Data: %d", addr, data);
-    addr = 4;
+    addr = 64'd4;
     #period;
 
     $display ("Address: %d, Data: %d", addr, data);

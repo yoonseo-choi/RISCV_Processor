@@ -1,4 +1,4 @@
-# RISCV_Processor
+# RISC-V Processor
 
 Design inspired by the following references:
 

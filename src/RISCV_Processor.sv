@@ -18,7 +18,7 @@ module RISCV_Processor (input logic clk, reset, select
     FullAdder_64 PC_INC_ADDER (_pc_ , 64'd1, 0, _pc_in0_, _pc_inc_cout_);           // change addend from 1 to 4 later when finalizing
     
 
-    LShift LSHIFT_UNIT (_instruction_64_, _instruction_64_shl_);
+    LShift_64 LSHIFT_UNIT (_instruction_64_, _instruction_64_shl_);
 
     FullAdder_64 PC_JMP_ADDER (_pc_, _instruction_64_shl_, 0, _pc_in1_, _pc_jmp_cout_);  
 
@@ -47,13 +47,13 @@ module RISCV_Processor (input logic clk, reset, select
     /*              Register File               */
     /*==========================================*/
 
-    logic _wr_en_;              // CU variable
+    logic _rf_wr_en_;              // CU variable
 
-    logic [63:0] _rd1_data_, _rd2_data_;
+    logic [63:0] _rf_rd1_data_, _rf_rd2_data_;
     
-    logic [63:0] _wr_data_;                 // input data from mem write back stage
+    logic [63:0] _rf_wr_data_;                 // input data from mem write back stage
 
-    RegFile_64 REGISTER_FILE (clk, reset, _instruction_[19:15], _instruction_[24:20], _instruction_[11:7], _wr_en_, _wr_data_, _rd1_data_, _rd2_data_);
+    RegFile_64 REGISTER_FILE (clk, reset, _instruction_[19:15], _instruction_[24:20], _instruction_[11:7], _rf_wr_en_, _rf_wr_data_, _rf_rd1_data_, _rf_rd2_data_);
 
 
     /*              Arithmetic Logic Unit               */
@@ -63,19 +63,33 @@ module RISCV_Processor (input logic clk, reset, select
 
     logic [63:0] _alu_src1_, _alu_src2_;
 
-    assign _alu_src1_ = _rd1_data_;
+    assign _alu_src1_ = _rf_rd1_data_;
 
-    Mux_2x1 ALU_SRC2_MUX (_rd2_data_ ,_instruction_64_, _alu_src2_sel_, _alu_src2_);
+    Mux_2x1 ALU_SRC2_MUX (_rf_rd2_data_ ,_instruction_64_, _alu_src2_sel_, _alu_src2_);
 
-    logic [3:0] _alu_op_sel_;
     logic [63:0] _alu_out_;
     logic _alu_zero_;
 
     ALU ALU (_alu_src1_, _alu_src2_, _alu_op_sel_, _alu_out_, _alu_zero_);
 
-    // ALU CONTROL UNIT 
+    /*                  ALU Control Unit                */
+    /*==================================================*/
+
     // receives input from control unit and instruction [30, 14:12] 
     // outputs the _alu_op_sel_
+    
+    logic [3:0] _alu_op_sel_;
+
+    ALU_Control ALU_CTRL ({_instruction_[30], _instruction_[14:12]}, _alu_op_sel_);
+
+    /*                  Data Memory                 */
+    /*==============================================*/
+
+    logic [63:0] _dmem_rd_data_;
+
+    Data_Memory DMEM (clk, reset, _alu_out_, _mem_write_, _mem_read_, _rf_rd2_data_, _dmem_rd_data_);
+
+    Mux_2x1 DMEM_MUX (_alu_out_, _dmem_rd_data_, _mem_to_reg_, _rf_wr_data_);
 
 
     /*                  Control Unit                    */
@@ -90,7 +104,7 @@ module RISCV_Processor (input logic clk, reset, select
     logic _mem_to_reg_;
     logic [1:0] _alu_op_;
     // _alu_src2_sel
-    // wr_en
+    // rf_wr_en
 
 
 

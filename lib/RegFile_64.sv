@@ -41,7 +41,7 @@ module RegFile_64 (input logic clk,
             end
 
 
-            if (wr_en) begin
+            else if (wr_en) begin
 
                 REG_FILE [wr_idx] <= wr_data;
 

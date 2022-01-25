@@ -55,7 +55,7 @@ module READ_FROM_IMEM (input logic [63:0] addr,
         
         if (addr > 64'd31) begin
             mem_addr = 4'd0;
-            data = 32'd15;
+            data = 32'hFFFFFFFF;
         end
             
         else begin

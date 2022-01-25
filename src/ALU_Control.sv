@@ -35,6 +35,11 @@ module ALU_Control (input logic [1:0] ALU_Op,
         else if ((ALU_Op == 2'b10 || ALU_Op == 2'b11) && (funct_field == 4'b0110)) begin
             ALU_Ctrl = 4'b0001;
         end
+        
+        // STL OP
+        else if ((ALU_Op == 2'b10 || ALU_Op == 2'b11) && (funct_field == 4'b1010)) begin
+            ALU_Ctrl = 4'b0111;
+        end
 
         else begin
             ALU_Ctrl = 4'b1111;

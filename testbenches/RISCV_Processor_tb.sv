@@ -33,13 +33,12 @@ initial begin: TEST_VECTORS
 reset = 0;
 UUT._pc_next_ = 0;
 
-#period;         // neg clk
-
+$display ("clock: %d", clk);
 $display ("memory contents: %d %d %d %d %d", UUT.DMEM.DMEM_CONTENTS[0], UUT.DMEM.DMEM_CONTENTS[1],UUT.DMEM.DMEM_CONTENTS[2], UUT.DMEM.DMEM_CONTENTS[3],UUT.DMEM.DMEM_CONTENTS[4]);
 
 $display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
 
-#1;        // neg clk
+#1        // pos clk
 $display ("clock: %d", clk);
 $display ("alu result: %d", UUT._alu_out_);
 $display ("alu op: %b", UUT._alu_op_sel_);
@@ -54,8 +53,8 @@ $display ("R[15] = %d", UUT.REGISTER_FILE.REG_FILE[15]);
 
 $display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
 
-#period;        // neg clk
-
+#1        // neg clk
+$display ("clock: %d", clk);
 $display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
 
 $display ("R[15] = %d", UUT.REGISTER_FILE.REG_FILE[15]);
@@ -69,6 +68,10 @@ $display ("register read idx1: %d, read idx2: %d", UUT.REGISTER_FILE.rd1_idx, UU
 $display ("register write idx: %d", UUT.REGISTER_FILE.wr_idx);
 $display ("alu src2 mux select: %d", UUT._alu_src2_sel_);
 $display ("alu src1: %d alu src2: %d", UUT._alu_src1_, UUT._alu_src2_);
+
+#1 
+
+$display ("clock: %d", clk);        // pos clk
 
 
 

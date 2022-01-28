@@ -5,9 +5,9 @@ module Data_Memory (input logic clk, reset,
                     output logic [63:0] rd_data
 );
 
-    logic [31:0][63:0] DMEM_CONTENTS = {
+    logic [0:31][63:0] DMEM_CONTENTS = {
 
-        64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0,
+        64'd1, 64'd2, 64'd3, 64'd4, 64'd5, 64'd0, 64'd0, 64'd0,
         64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0,
         64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0,
         64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0

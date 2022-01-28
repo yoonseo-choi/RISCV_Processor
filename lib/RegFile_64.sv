@@ -8,7 +8,7 @@ module RegFile_64 (input logic clk,
 );
 
 
-    logic [31:0][63:0] REG_FILE = {
+    logic [0:31][63:0] REG_FILE = {
 
         64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0,
         64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0, 64'd0,

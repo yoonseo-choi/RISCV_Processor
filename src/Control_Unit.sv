@@ -1,5 +1,5 @@
 module Control_Unit (input logic [6:0] instruction,
-                     output logic branch, memread, mem2reg, memwrite, alusrc, regwrite,
+                     output logic alusrc, mem2reg, regwrite, memread, memwrite, branch,
                      output logic [1:0] aluop
 );
 

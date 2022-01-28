@@ -30,35 +30,47 @@ end
 // test vectors for unit under test
 initial begin: TEST_VECTORS
 
-reset = 1;
-
-#2
-
 reset = 0;
+UUT._pc_next_ = 0;
 
-select = 0;
-#10;
-$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
+#period;         // neg clk
 
-
-select = 1;
-#period;
-
+$display ("memory contents: %d %d %d %d %d", UUT.DMEM.DMEM_CONTENTS[0], UUT.DMEM.DMEM_CONTENTS[1],UUT.DMEM.DMEM_CONTENTS[2], UUT.DMEM.DMEM_CONTENTS[3],UUT.DMEM.DMEM_CONTENTS[4]);
 
 $display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
-#period;
+
+#1;        // neg clk
+$display ("clock: %d", clk);
+$display ("alu result: %d", UUT._alu_out_);
+$display ("alu op: %b", UUT._alu_op_sel_);
+$display ("alu src1: %d alu src2: %d", UUT._alu_src1_, UUT._alu_src2_);
+$display ("alu src2 mux select: %d", UUT._alu_src2_sel_);
+$display ("register read idx1: %d, read idx2: %d", UUT.REGISTER_FILE.rd1_idx, UUT.REGISTER_FILE.rd2_idx);
+$display ("register write idx: %d", UUT.REGISTER_FILE.wr_idx);
+$display ("data memory out: %d", UUT._dmem_rd_data_);
+$display ("register write data out: %d", UUT._rf_wr_data_);
+$display ("data mem mux select: %d", UUT._mem_to_reg_);
+$display ("R[15] = %d", UUT.REGISTER_FILE.REG_FILE[15]);
 
 $display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
-#period;
+
+#period;        // neg clk
 
 $display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
-#period;
 
-$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
-#period;
+$display ("R[15] = %d", UUT.REGISTER_FILE.REG_FILE[15]);
 
-$display ("pc: 0x%h, instruction: %b", UUT._pc_, UUT._instruction_);
-#period;
+$display ("alu result: %d", UUT._alu_out_);
+$display ("data memory out: %d", UUT._dmem_rd_data_);
+$display ("register write data out: %d", UUT._rf_wr_data_);
+$display ("data mem mux select: %d", UUT._mem_to_reg_);
+
+$display ("register read idx1: %d, read idx2: %d", UUT.REGISTER_FILE.rd1_idx, UUT.REGISTER_FILE.rd2_idx);
+$display ("register write idx: %d", UUT.REGISTER_FILE.wr_idx);
+$display ("alu src2 mux select: %d", UUT._alu_src2_sel_);
+$display ("alu src1: %d alu src2: %d", UUT._alu_src1_, UUT._alu_src2_);
+
+
 
 
 end

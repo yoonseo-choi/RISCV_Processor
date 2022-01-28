@@ -1,4 +1,4 @@
-module RISCV_Processor (input logic clk, reset, select
+module RISCV_Processor (input logic clk, reset
 );
 
     /*                 PC LOGIC                */
@@ -77,7 +77,7 @@ module RISCV_Processor (input logic clk, reset, select
 
     // receives input from control unit and instruction [30, 14:12] 
     // outputs the _alu_op_sel_
-    
+
     logic [3:0] _alu_op_sel_;
 
     ALU_Control ALU_CTRL ({_instruction_[30], _instruction_[14:12]}, _alu_op_sel_);
@@ -93,19 +93,14 @@ module RISCV_Processor (input logic clk, reset, select
 
 
     /*                  Control Unit                    */
+    /*==================================================*/
 
-    // inputs
-    // _instruction_ [6:0]
-
-
-    // outputs
     logic _branch_;
     logic _mem_read_, _mem_write_;
     logic _mem_to_reg_;
     logic [1:0] _alu_op_;
-    // _alu_src2_sel
-    // rf_wr_en
 
+    Control_Unit CTRL_UNIT (_instruction_, _alu_src2_sel_, _mem_to_reg_, _rf_wr_en_, _mem_read_, _mem_write_, _branch_, _alu_op_);
 
 
     

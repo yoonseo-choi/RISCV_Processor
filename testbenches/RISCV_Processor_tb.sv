@@ -7,7 +7,7 @@ timeprecision 1ns;
 
 logic clk = 0;
 
-logic select, reset;
+logic reset;
 
 
 localparam period = 2;

@@ -1,11 +1,21 @@
-module Control_Unit (input logic [6:0] instruction,
-                     output logic alusrc, mem2reg, regwrite, memread, memwrite, branch,
+module Control_Unit (input logic clk, reset,
+                     input logic [6:0] instruction,
+                     output logic alusrc, mem2reg, regwrite, memread, memwrite, branch, writepc
                      output logic [1:0] aluop
 );
 
 
 
     always_comb begin
+        
+        alusrc = 0;
+        mem2reg = 0;
+        regwrite = 0;
+        memread = 0;
+        memwrite = 0;
+        branch = 0;
+        aluop = 2'b00;
+        writepc = 0;
         
         // R Format
         if (instruction == 7'b0110011) begin
@@ -68,6 +78,7 @@ module Control_Unit (input logic [6:0] instruction,
             memwrite = 0;
             branch = 0;
             aluop = 2'b00;
+            writepc = 0;
 
         end
 

@@ -257,6 +257,12 @@ $display ("writepc: %d", UUT.CTRL_UNIT.writepc);
 
 $display ("\n");
 
+#20
+
+$display ("R[5]: %d", UUT.DATAPATH.REGISTER_FILE.REG_FILE [5]);
+$display ("R [15]: %d", UUT.DATAPATH.REGISTER_FILE.REG_FILE [15]);
+
+
 
 end
 endmodule

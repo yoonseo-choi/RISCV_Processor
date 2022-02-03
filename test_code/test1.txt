@@ -16,7 +16,7 @@ R [2 ] = 0
 R [3 ] = 0
 R [4 ] = 0
 
-ld x14, 2(x2)           # R[14] <-- M[R[2] + 2] = 3
+ld x15, 2(x2)           # R[15] <-- M[R[2] + 2] = 3
 
 Machine Language Format:
 

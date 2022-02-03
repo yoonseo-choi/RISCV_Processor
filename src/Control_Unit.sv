@@ -5,7 +5,7 @@ module Control_Unit (input logic clk, reset, run, power,
 );
 
 
-    enum logic [3:0] {Start, Fetch, Decode, R_Type, R_Type_Done, R_Type_Idle, Load_Store, Load, Load_Done, Load_Idle} state, next_state;
+    enum logic [3:0] {Start, Fetch, Decode, R_Type, R_Type_Done, R_Type_Idle, Load_Store, Load, Load_Done, Load_Idle, Store, Store_Idle} state, next_state;
 
     always_ff @ (posedge clk) begin
 
@@ -67,8 +67,8 @@ module Control_Unit (input logic clk, reset, run, power,
                     7'b0000011: 
                         next_state = Load_Store;
 
-                    // 7'b0100011:
-                    //     next_state = Load_Store;
+                    7'b0100011:
+                        next_state = Load_Store;
 
                     default:
                         next_state = Start;
@@ -91,8 +91,8 @@ module Control_Unit (input logic clk, reset, run, power,
                     7'b0000011:
                         next_state = Load;
                     
-                    // 7'b0100011:
-                    //     next_state = Store;
+                    7'b0100011:
+                        next_state = Store;
 
                     default:    
                         next_state = Start;
@@ -101,7 +101,6 @@ module Control_Unit (input logic clk, reset, run, power,
 
             end
 
-
             Load: 
                 next_state = Load_Done;
 
@@ -109,6 +108,12 @@ module Control_Unit (input logic clk, reset, run, power,
                 next_state = Load_Idle;
             
             Load_Idle:
+                next_state = Fetch;
+
+            Store:
+                next_state = Store_Idle;
+
+            Store_Idle:
                 next_state = Fetch;
 
             default:
@@ -122,12 +127,10 @@ module Control_Unit (input logic clk, reset, run, power,
             Start: 
                 startpc = power;
 
-            
             Fetch: begin
                 writepc = 1;
                 startpc = power;
             end
-
 
             Decode: ;
 
@@ -153,6 +156,11 @@ module Control_Unit (input logic clk, reset, run, power,
             end
 
             Load_Idle: ;
+
+            Store:
+                memwrite = 1;
+
+            Store_Idle: ;
 
             default: ;
 

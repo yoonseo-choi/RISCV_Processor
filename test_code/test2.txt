@@ -1,0 +1,17 @@
+Simple RISCV Add Function Test
+
+/*      Current Memory Content      */
+
+M [0 ] = 1
+M [1 ] = 2
+M [2 ] = 3
+M [3 ] = 4
+M [4 ] = 5
+
+
+
+add x5, x6, x7      
+
+Machine Language Format:
+
+0000000 00111 00110 000 00101 0110011

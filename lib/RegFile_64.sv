@@ -47,6 +47,12 @@ module RegFile_64 (input logic clk,
 
             end
 
+            else begin
+
+                REG_FILE [wr_idx] <= REG_FILE [wr_idx];
+
+            end
+
         end
 
     endgenerate

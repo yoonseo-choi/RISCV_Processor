@@ -1,5 +1,5 @@
 module datapath (input logic clk, reset,
-                 input logic alusrc, mem2reg, regwrite, memread, memwrite, branch, writepc
+                 input logic alusrc, mem2reg, regwrite, memread, memwrite, branch, writepc, startpc,
                  input logic [1:0] aluop,
                  output logic [6:0] opcode
 );
@@ -9,6 +9,7 @@ module datapath (input logic clk, reset,
     // PC
 
     logic [63:0] _pc_next_, _pc_;           // pc and next pc  
+    logic [63:0] _pc_start0_, _pc_start1_;
     logic _pc_select_;                      // pc mux select line
     logic [63:0] _pc_in0_, _pc_in1_;        // inputs to pc mux
     logic _pc_inc_cout_, _pc_jmp_cout_;                   // carry out from pc adders
@@ -16,13 +17,12 @@ module datapath (input logic clk, reset,
 
     // Instruction
 
-    logic [63:0] _instruction_64_;
+    logic [63:0] _imm_64_;
     logic [31:0] _instruction_;
-    logic [63:0] _instruction_64_shl_;
+    logic [63:0] _imm_64_shl_;
 
     // Register File
 
-    logic _rf_wr_en_;              // CU variable
     logic [63:0] _rf_rd1_data_, _rf_rd2_data_;
     logic [63:0] _rf_wr_data_;                 // input data from mem write back stage
 
@@ -31,6 +31,7 @@ module datapath (input logic clk, reset,
     logic [63:0] _alu_src1_, _alu_src2_;
     logic [63:0] _alu_out_;
     logic [3:0] _alu_op_sel_;
+    logic [63:0] _alu_result_;
 
     // Data Memory
 
@@ -43,12 +44,16 @@ module datapath (input logic clk, reset,
 
     FullAdder_64 PC_INC_ADDER (_pc_ , 64'd1, 1'b0, _pc_in0_, _pc_inc_cout_);           // change addend from 1 to 4 later when finalizing
     
-    LShift_64 LSHIFT_UNIT (_instruction_64_, _instruction_64_shl_);
+    LShift_64 LSHIFT_UNIT (_imm_64_, _imm_64_shl_);
 
-    FullAdder_64 PC_JMP_ADDER (_pc_, _instruction_64_shl_, 1'b0, _pc_in1_, _pc_jmp_cout_);  
+    FullAdder_64 PC_JMP_ADDER (_pc_, _imm_64_shl_, 1'b0, _pc_in1_, _pc_jmp_cout_);  
 
 
-    Mux_2x1 PC_MUX (_pc_in0_, _pc_in1_, _pc_select_, _pc_next_);     
+    Mux_2x1 PC_MUX (_pc_in0_, _pc_in1_, _pc_select_, _pc_start0_);  
+
+    assign _pc_start1_ = 64'd0;  
+
+    Mux_2x1 PC_START_MUX (_pc_start0_, _pc_start1_, startpc, _pc_next_);
 
     assign _pc_select_ = _alu_zero_ & branch;         // AND gate between branch and alu zero
 
@@ -60,7 +65,7 @@ module datapath (input logic clk, reset,
 
     assign opcode = _instruction_ [6:0];
 
-    ImmGen IMMGEN_UNIT (_instruction_, _instruction_64_);
+    ImmGen IMMGEN_UNIT (_instruction_, _imm_64_);
 
 
     /*              Register File               */
@@ -74,9 +79,11 @@ module datapath (input logic clk, reset,
 
     assign _alu_src1_ = _rf_rd1_data_;
 
-    Mux_2x1 ALU_SRC2_MUX (_rf_rd2_data_ ,_instruction_64_, alusrc, _alu_src2_);
+    Mux_2x1 ALU_SRC2_MUX (_rf_rd2_data_ ,_imm_64_, alusrc, _alu_src2_);
 
     ALU ALU (_alu_src1_, _alu_src2_, _alu_op_sel_, _alu_out_, _alu_zero_);
+
+    Register_64 ALU_OUT_REG (clk, reset, 1'b1, _alu_out_, _alu_result_);
 
     /*                  ALU Control Unit                */
     /*==================================================*/
@@ -89,15 +96,10 @@ module datapath (input logic clk, reset,
     /*                  Data Memory                 */
     /*==============================================*/
 
-    Data_Memory DMEM (clk, reset, _alu_out_, memwrite, memread, _rf_rd2_data_, _dmem_rd_data_);
+    Data_Memory DMEM (clk, reset, _alu_result_, memwrite, memread, _rf_rd2_data_, _dmem_rd_data_);
 
-    Mux_2x1 DMEM_MUX (_alu_out_, _dmem_rd_data_, mem2reg, _rf_wr_data_);
+    Mux_2x1 DMEM_MUX (_alu_result_, _dmem_rd_data_, mem2reg, _rf_wr_data_);
 
-
-    /*                  Control Unit                    */
-    /*==================================================*/
-
-    // Control_Unit CTRL_UNIT (_instruction_ [6:0], _alu_src2_sel_, _mem_to_reg_, _rf_wr_en_, _mem_read_, _mem_write_, _branch_, _alu_op_);
 
 
     

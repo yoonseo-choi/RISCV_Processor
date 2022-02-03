@@ -1,5 +1,6 @@
 module Register_64 (input logic clk, reset, wr_en,
-                    input logic [63:0] in , out
+                    input logic [63:0] in,
+                    output logic [63:0] out
 );
 
     always_ff @ (posedge clk) begin

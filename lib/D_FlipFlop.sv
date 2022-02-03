@@ -1,6 +1,6 @@
-module D_FlipFlop (input logic [63:0] d, 
+module D_FlipFlop (input logic d, 
             input logic clk,
-            output logic [63:0] q
+            output logic q
 );
 
     always_ff @ (posedge clk) begin

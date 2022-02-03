@@ -1,0 +1,25 @@
+Simple Load Operation Test
+
+/*      Current Memory Content      */
+
+M [0 ] = 1
+M [1 ] = 2
+M [2 ] = 3
+M [3 ] = 4
+M [4 ] = 5
+
+/*      Current Register Content    */
+
+R [0 ] = 0
+R [1 ] = 0
+R [2 ] = 0
+R [3 ] = 0
+R [4 ] = 0
+
+ld x14, 2(x2)           # R[14] <-- M[R[2] + 2] = 3
+
+Machine Language Format:
+
+ ___________________________________________________
+| 0000 0000 0010 | 0001 0 | 010 | 0111 1 | 0000 011 |
+    imm             rs1      LW     rd      opcode
